@@ -68,8 +68,11 @@
 import { ref } from "vue";
 import http from "../../plugins/http";
 import router from "../../router/index";
+import { useUserStore } from "../../stores/user";
+
 export default {
   setup() {
+    const store = useUserStore();
     const email = ref("");
     const password = ref("");
 
@@ -80,7 +83,13 @@ export default {
           password: password.value,
         })
         .then((response) => {
-          const jwt = response.data;
+          const jwt = response.data.token;
+          const username = response.data.user;
+
+          store.setUsertoken(jwt);
+          store.setUsername(username);
+
+          localStorage.setItem("USERNAME", username);
           localStorage.setItem("JWT_TOKEN", jwt);
           router.push("/");
         })
@@ -89,7 +98,7 @@ export default {
         });
     };
 
-    return { email, password, login };
+    return { email, password, login, store };
   },
 };
 </script>
