@@ -21,14 +21,13 @@ export default {
   },
   setup() {
     const posts = ref([]);
+    const user = ref("");
 
     http.get("/posts/rhuanzin").then((response) => {
-      console.log(response);
       posts.value = response.data;
-      console.log(posts.value);
     });
 
-    return { posts };
+    return { posts, user };
   },
 };
 </script>

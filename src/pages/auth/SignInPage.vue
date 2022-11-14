@@ -51,6 +51,7 @@
             color="purple-4"
             class="full-width text-white"
             label="Sign In"
+            @click="login"
           />
         </q-card-actions>
         <q-card-section class="text-center q-pa-sm">
@@ -65,12 +66,30 @@
 
 <script>
 import { ref } from "vue";
+import http from "../../plugins/http";
+import router from "../../router/index";
 export default {
   setup() {
     const email = ref("");
     const password = ref("");
 
-    return { email, password };
+    const login = () => {
+      http
+        .post("/login/", {
+          email: email.value,
+          password: password.value,
+        })
+        .then((response) => {
+          const jwt = response.data;
+          localStorage.setItem("JWT_TOKEN", jwt);
+          router.push("/");
+        })
+        .catch((error) => {
+          console.log("An error ocurred: ", error);
+        });
+    };
+
+    return { email, password, login };
   },
 };
 </script>

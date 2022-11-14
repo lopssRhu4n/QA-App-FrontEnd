@@ -8,15 +8,15 @@
       <q-toolbar class="flex justify-between q-mt-sm">
         <q-toolbar-title>
           <q-avatar> </q-avatar>
-          <router-link style="color: white" to="/">Q&A</router-link>
+          <q-btn unelevated to="/">Q&A</q-btn>
         </q-toolbar-title>
         <q-space />
         <div id="search-bar" class="col-6">
           <q-input
+            filled
             standout
-            rounded
             bottom-slots
-            color="black"
+            color="primary"
             label-color="black"
             bg-color="white"
             v-model="text"
@@ -31,16 +31,16 @@
         <q-space />
         <div>
           <q-btn
-            color="white"
-            text-color="black"
+            unelevated
+            text-color="white"
             label="SignUp"
             :to="{ name: 'signup' }"
             class="q-md-lg"
           />
 
           <q-btn
-            color="white"
-            text-color="black"
+            unelevated
+            text-color="white"
             label="SignIn"
             :to="{ name: 'signin' }"
             class="q-mx-md"
