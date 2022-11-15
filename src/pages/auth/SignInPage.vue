@@ -83,15 +83,19 @@ export default {
           password: password.value,
         })
         .then((response) => {
-          const jwt = response.data.token;
-          const username = response.data.user;
+          if (response.data.status == "error") {
+            window.alert(response.data.msg);
+          } else {
+            const jwt = response.data.token;
+            const username = response.data.user;
 
-          store.setUsertoken(jwt);
-          store.setUsername(username);
+            store.setUsertoken(jwt);
+            store.setUsername(username);
 
-          localStorage.setItem("USERNAME", username);
-          localStorage.setItem("JWT_TOKEN", jwt);
-          router.push("/");
+            localStorage.setItem("USERNAME", username);
+            localStorage.setItem("JWT_TOKEN", jwt);
+            router.push("/");
+          }
         })
         .catch((error) => {
           console.log("An error ocurred: ", error);

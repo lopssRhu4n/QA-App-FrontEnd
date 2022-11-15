@@ -48,6 +48,7 @@
           color="purple-4"
           class="full-width text-white"
           label="Get Started"
+          @click="signUp"
         />
       </q-card-actions>
       <q-card-section class="text-center q-pa-sm">
@@ -61,13 +62,36 @@
 
 <script>
 import { ref } from "vue";
+import http from "../../plugins/http";
+import { useUserStore } from "../../stores/user";
+import router from "../../router/index";
+
 export default {
   setup() {
     const email = ref("");
     const username = ref("");
     const password = ref("");
+    const store = useUserStore();
 
-    return { email, username, password };
+    const signUp = () => {
+      http
+        .post("/users/", {
+          email: email.value,
+          username: username.value,
+          password: password.value,
+        })
+        .then((response) => {
+          if (response.data.status == "error") {
+            window.alert(response.data.msg);
+          } else {
+            store.setUsername(response.data.username);
+            store.setUsertoken(response.data.jwt);
+            router.push("/");
+          }
+        });
+    };
+
+    return { email, username, password, signUp, store };
   },
 };
 </script>

@@ -7,16 +7,33 @@
     <q-card-section class="q-pt-none">
       {{ post.content }}
     </q-card-section>
+    <q-card-actions>
+      <q-form class="full-width">
+        <q-input
+          v-model="answerText"
+          label="Answer"
+          bg-color="white"
+          filled
+          type="textarea"
+        />
+        <div>
+          <q-input type="submit" bg-color="white" class="q-mt-md"></q-input>
+          <q-input type="reset"></q-input>
+        </div>
+      </q-form>
+    </q-card-actions>
   </q-card>
 </template>
 
 <script>
+import { ref } from "vue";
 export default {
   props: {
     post: Object,
   },
   setup(props) {
-    return { props };
+    const answerText = ref("");
+    return { props, answerText };
   },
 };
 </script>

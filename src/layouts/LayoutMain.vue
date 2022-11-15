@@ -48,12 +48,6 @@
         </div>
         <q-btn dense flat round icon="menu" @click="toggleRightDrawer" />
       </q-toolbar>
-
-      <!-- <q-tabs align="left">
-        <q-route-tab to="/profile" label="My Profile" />
-        <q-route-tab to="/comunity" label="Comunity" />
-        <q-route-tab to="/settings" label="Settings" />
-      </q-tabs> -->
     </q-header>
 
     <q-drawer
@@ -72,7 +66,9 @@
                 <q-icon :name="menuItem.icon" />
               </q-item-section>
               <q-item-section>
-                {{ menuItem.label }}
+                <q-btn unelevated :to="menuItem.page">{{
+                  menuItem.label
+                }}</q-btn>
               </q-item-section>
             </q-item>
             <q-separator :key="'sep' + index" v-if="menuItem.separator" />
@@ -123,6 +119,7 @@ const menuList = [
     icon: "settings",
     label: "Settings",
     separator: false,
+    page: "/settings",
   },
   {
     icon: "feedback",
