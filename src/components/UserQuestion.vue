@@ -3,7 +3,16 @@
     <q-card-section>
       <div class="text-h6">{{ post.title }}</div>
       <div class="text-subtitle2">{{ post.author }}</div>
+      <q-btn
+        unelevated
+        color="secondary"
+        @click="DeletePost"
+        :size="xs"
+        rounded
+        icon="delete"
+      />
     </q-card-section>
+
     <q-card-section class="q-pt-none">
       {{ post.content }}
     </q-card-section>
@@ -27,13 +36,26 @@
 
 <script>
 import { ref } from "vue";
+import http from "../plugins/http";
+import router from "../router";
 export default {
   props: {
     post: Object,
   },
   setup(props) {
+    console.log(props.post.id);
     const answerText = ref("");
-    return { props, answerText };
+    const DeletePost = async () => {
+      try {
+        const { data, status } = await http.delete(`/posts/${props.post.id}`);
+        console.log(data, status);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        router.push("/");
+      }
+    };
+    return { props, answerText, DeletePost };
   },
 };
 </script>

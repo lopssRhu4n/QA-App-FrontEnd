@@ -20,7 +20,11 @@
                   placeholder="Content"
                 ></q-input>
                 <div>
-                  <q-input type="submit" :loading="loading.value"></q-input>
+                  <q-input
+                    type="submit"
+                    :loading="loading.value"
+                    placeholder="enviar"
+                  ></q-input>
                   <q-input type="reset"></q-input>
                 </div>
               </q-form>
