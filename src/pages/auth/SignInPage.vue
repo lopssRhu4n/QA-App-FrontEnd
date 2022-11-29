@@ -16,7 +16,7 @@
             <q-input
               square
               clearable
-              v-model="email"
+              v-model="form.email"
               type="email"
               label="Email"
             >
@@ -27,7 +27,7 @@
             <q-input
               square
               clearable
-              v-model="password"
+              v-model="form.password"
               type="password"
               label="Password"
             >
@@ -46,6 +46,7 @@
         </q-card-section>
         <q-card-actions class="q-px-lg">
           <q-btn
+            :loading="loading"
             unelevated
             size="lg"
             color="purple-4"
@@ -65,44 +66,48 @@
 </template>
 
 <script>
-import { ref } from "vue";
-import http from "../../plugins/http";
-import router from "../../router/index";
+import { reactive, ref } from "vue";
+// import http from "../../plugins/http";
+// import router from "../../router/index";
 import { useUserStore } from "../../stores/user";
+import authService from "../../services/AuthService";
+import router from "../../router";
 
 export default {
   setup() {
     const store = useUserStore();
     const email = ref("");
     const password = ref("");
+    const loading = ref(false);
+    const form = reactive({
+      email: "",
+      password: "",
+    });
 
-    const login = () => {
-      http
-        .post("/login/", {
-          email: email.value,
-          password: password.value,
-        })
-        .then((response) => {
-          if (response.data.status == "error") {
-            window.alert(response.data.msg);
-          } else {
-            const jwt = response.data.token;
-            const username = response.data.user;
+    const login = async () => {
+      try {
+        loading.value = true;
+        const { data, status } = await authService.login(form);
+        console.log(data, status);
 
-            store.setUsertoken(jwt);
-            store.setUsername(username);
+        const jwt = data.token;
+        const username = data.user;
 
-            localStorage.setItem("USERNAME", username);
-            localStorage.setItem("JWT_TOKEN", jwt);
-            router.push("/");
-          }
-        })
-        .catch((error) => {
-          console.log("An error ocurred: ", error);
-        });
+        store.setUsertoken(jwt);
+        store.setUsername(username);
+
+        router.push("/");
+
+        localStorage.setItem("USERNAME", username);
+        localStorage.setItem("JWT_TOKEN", jwt);
+      } catch (error) {
+        window.alert(error.response.data.msg);
+      } finally {
+        loading.value = false;
+      }
     };
 
-    return { email, password, login, store };
+    return { email, password, login, store, form, loading };
   },
 };
 </script>

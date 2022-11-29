@@ -1,13 +1,17 @@
 <template>
   <q-page>
     <div class="row q-gutter-md">
-      <div class="col-2 bg-white fixed full-height">
+      <div class="col-2 bg-white full-height">
         <q-card class="full-height">
           <q-card-section>
             <p>Ask something!</p>
             <q-card-actions class="bg-primary">
-              <q-form>
-                <q-input type="textarea" bg-color="white"></q-input>
+              <q-form @submit="submitQuestion">
+                <q-input
+                  type="textarea"
+                  bg-color="white"
+                  v-model="question.value"
+                ></q-input>
                 <div>
                   <q-input type="submit"></q-input>
                   <q-input type="reset"></q-input>
@@ -45,6 +49,7 @@ export default {
     const store = useUserStore();
     const posts = ref([]);
     const user = ref("");
+    const question = ref({});
 
     user.value = store.getUsername;
 
@@ -52,7 +57,11 @@ export default {
       posts.value = response.data;
     });
 
-    return { posts, user, store };
+    const submitQuestion = () => {
+      // var req = http.get()
+    };
+
+    return { posts, user, store, submitQuestion, question };
   },
 };
 </script>
