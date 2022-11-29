@@ -8,12 +8,19 @@
             <q-card-actions class="bg-primary">
               <q-form @submit="submitQuestion">
                 <q-input
+                  type="text"
+                  bg-color="white"
+                  v-model="question.title"
+                  placeholder="Title"
+                ></q-input>
+                <q-input
                   type="textarea"
                   bg-color="white"
-                  v-model="question.value"
+                  v-model="question.content"
+                  placeholder="Content"
                 ></q-input>
                 <div>
-                  <q-input type="submit"></q-input>
+                  <q-input type="submit" :loading="loading.value"></q-input>
                   <q-input type="reset"></q-input>
                 </div>
               </q-form>
@@ -40,28 +47,47 @@ import { ref } from "vue";
 import http from "../plugins/http";
 import UserQuestion from "../components/UserQuestion.vue";
 import { useUserStore } from "../stores/user";
+import router from "../router";
 
 export default {
   components: {
     UserQuestion,
   },
   setup() {
+    const loading = ref(false);
     const store = useUserStore();
     const posts = ref([]);
     const user = ref("");
-    const question = ref({});
+    const question = ref({
+      author: "",
+      content: "",
+      title: "",
+    });
 
     user.value = store.getUsername;
+
+    if (!user.value) {
+      router.push("/signin");
+    }
 
     http.get(`/posts/${user.value}`).then((response) => {
       posts.value = response.data;
     });
 
-    const submitQuestion = () => {
-      // var req = http.get()
+    const submitQuestion = async () => {
+      try {
+        question.value.author = user.value;
+        loading.value = true;
+        const { data, status } = await http.post("/posts/", question.value);
+        console.log(data, status);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        loading.value = false;
+      }
     };
 
-    return { posts, user, store, submitQuestion, question };
+    return { posts, user, store, submitQuestion, question, loading };
   },
 };
 </script>

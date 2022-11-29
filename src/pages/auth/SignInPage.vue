@@ -96,10 +96,10 @@ export default {
         store.setUsertoken(jwt);
         store.setUsername(username);
 
-        router.push("/");
-
         localStorage.setItem("USERNAME", username);
         localStorage.setItem("JWT_TOKEN", jwt);
+
+        router.push("/");
       } catch (error) {
         window.alert(error.response.data.msg);
       } finally {
