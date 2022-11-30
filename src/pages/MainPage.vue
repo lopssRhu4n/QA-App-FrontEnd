@@ -6,26 +6,35 @@
           <q-card-section>
             <p>Ask something!</p>
             <q-card-actions class="bg-primary">
-              <q-form @submit="submitQuestion">
+              <q-form @submit="submitQuestion" @reset="OnReset">
                 <q-input
                   type="text"
                   bg-color="white"
                   v-model="question.title"
+                  class="q-my-sm"
+                  outlined
                   placeholder="Title"
                 ></q-input>
                 <q-input
                   type="textarea"
                   bg-color="white"
+                  class="q-my-sm"
                   v-model="question.content"
                   placeholder="Content"
+                  outlined
                 ></q-input>
                 <div>
                   <q-input
+                    bg-color="white"
                     type="submit"
                     :loading="loading.value"
-                    placeholder="enviar"
+                    class="q-my-sm"
                   ></q-input>
-                  <q-input type="reset"></q-input>
+                  <q-input
+                    type="reset"
+                    bg-color="secondary"
+                    class="q-my-sm"
+                  ></q-input>
                 </div>
               </q-form>
             </q-card-actions>
@@ -59,24 +68,23 @@ export default {
     UserQuestion,
   },
   setup() {
-    const loading = ref(false);
-    const store = useUserStore();
     const posts = ref([]);
     const user = ref("");
-    const question = ref({
-      author: "",
-      content: "",
-      title: "",
+    PostsService.getQuestions(user.value).then((response) => {
+      posts.value = response.data;
     });
-
     user.value = localStorage.getItem("USERNAME");
-
     if (!user.value) {
       router.push("/signin");
     }
 
-    PostsService.getQuestions(user.value).then((response) => {
-      posts.value = response.data;
+    const loading = ref(false);
+    const store = useUserStore();
+
+    const question = ref({
+      author: "",
+      content: "",
+      title: "",
     });
 
     const submitQuestion = async () => {
@@ -93,8 +101,20 @@ export default {
         loading.value = false;
       }
     };
+    const OnReset = () => {
+      question.value.content = "";
+      question.value.title = "";
+    };
 
-    return { posts, user, store, submitQuestion, question, loading };
+    return {
+      posts,
+      user,
+      store,
+      submitQuestion,
+      question,
+      loading,
+      OnReset,
+    };
   },
 };
 </script>
