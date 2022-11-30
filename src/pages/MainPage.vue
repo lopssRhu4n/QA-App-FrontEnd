@@ -48,10 +48,11 @@
 
 <script>
 import { ref } from "vue";
-import http from "../plugins/http";
+//import http from "../plugins/http";
 import UserQuestion from "../components/UserQuestion.vue";
 import { useUserStore } from "../stores/user";
 import router from "../router";
+import PostsService from "../services/PostsService";
 
 export default {
   components: {
@@ -68,13 +69,13 @@ export default {
       title: "",
     });
 
-    user.value = store.getUsername;
+    user.value = localStorage.getItem("USERNAME");
 
     if (!user.value) {
       router.push("/signin");
     }
 
-    http.get(`/posts/${user.value}`).then((response) => {
+    PostsService.getQuestions(user.value).then((response) => {
       posts.value = response.data;
     });
 
@@ -82,7 +83,9 @@ export default {
       try {
         question.value.author = user.value;
         loading.value = true;
-        const { data, status } = await http.post("/posts/", question.value);
+        const { data, status } = await PostsService.postQuestion(
+          question.value
+        );
         console.log(data, status);
       } catch (error) {
         console.log(error);

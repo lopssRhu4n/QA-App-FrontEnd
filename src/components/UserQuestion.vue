@@ -43,7 +43,6 @@ export default {
     post: Object,
   },
   setup(props) {
-    console.log(props.post.id);
     const answerText = ref("");
     const DeletePost = async () => {
       try {
