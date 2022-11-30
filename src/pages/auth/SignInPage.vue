@@ -92,10 +92,13 @@ export default {
 
         const jwt = data.token;
         const username = data.user;
+        const id = data.userID;
 
+        store.setUserID(id);
         store.setUsertoken(jwt);
         store.setUsername(username);
 
+        localStorage.setItem("USERID", id);
         localStorage.setItem("USERNAME", username);
         localStorage.setItem("JWT_TOKEN", jwt);
 

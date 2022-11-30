@@ -5,6 +5,10 @@ export default class UserService {
     return http.get("/users/");
   }
 
+  static getUniqueUser(id) {
+    return http.get(`/users/${id}`);
+  }
+
   static createUser(data) {
     return http.post("/users/", data);
   }

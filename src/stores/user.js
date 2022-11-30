@@ -8,6 +8,12 @@ export const useUserStore = defineStore("user", () => {
     username.value = value;
   }
 
+  const userID = ref("");
+  const getUserID = computed(() => userID.value);
+  function setUserID(value) {
+    userID.value = value;
+  }
+
   const usertoken = ref("");
   const getUsertoken = computed(() => usertoken.value);
   function setUsertoken(value) {
@@ -18,6 +24,9 @@ export const useUserStore = defineStore("user", () => {
     username,
     getUsername,
     setUsername,
+    userID,
+    getUserID,
+    setUserID,
     usertoken,
     getUsertoken,
     setUsertoken,
