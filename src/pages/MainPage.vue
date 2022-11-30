@@ -69,10 +69,10 @@ export default {
   setup() {
     const posts = ref([]);
     const user = ref("");
+    user.value = localStorage.getItem("USERNAME");
     PostsService.getQuestions(user.value).then((response) => {
       posts.value = response.data;
     });
-    user.value = localStorage.getItem("USERNAME");
 
     const loading = ref(false);
     const store = useUserStore();
