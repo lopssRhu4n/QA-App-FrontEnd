@@ -60,7 +60,6 @@ import { ref } from "vue";
 //import http from "../plugins/http";
 import UserQuestion from "../components/UserQuestion.vue";
 import { useUserStore } from "../stores/user";
-import router from "../router";
 import PostsService from "../services/PostsService";
 
 export default {
@@ -74,9 +73,6 @@ export default {
       posts.value = response.data;
     });
     user.value = localStorage.getItem("USERNAME");
-    if (!user.value) {
-      router.push("/signin");
-    }
 
     const loading = ref(false);
     const store = useUserStore();

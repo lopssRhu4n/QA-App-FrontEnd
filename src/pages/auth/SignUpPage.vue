@@ -12,7 +12,13 @@
       </q-card-section>
       <q-card-section>
         <q-form class="q-px-sm q-pt-xl q-pb-lg">
-          <q-input square clearable v-model="email" type="email" label="Email">
+          <q-input
+            square
+            clearable
+            v-model="userData.email"
+            type="email"
+            label="Email"
+          >
             <template v-slot:prepend>
               <q-icon name="email" />
             </template>
@@ -20,7 +26,7 @@
           <q-input
             square
             clearable
-            v-model="username"
+            v-model="userData.username"
             type="username"
             label="Username"
           >
@@ -31,7 +37,7 @@
           <q-input
             square
             clearable
-            v-model="password"
+            v-model="userData.password"
             type="password"
             label="Password"
           >
@@ -62,36 +68,50 @@
 
 <script>
 import { ref } from "vue";
-import http from "../../plugins/http";
+//import http from "../../plugins/http";
 import { useUserStore } from "../../stores/user";
-import router from "../../router/index";
+//import router from "../../router/index";
+import UserService from "../../services/UserService";
+import router from "../../router";
 
 export default {
   setup() {
     const email = ref("");
     const username = ref("");
     const password = ref("");
+    const userData = ref({
+      email: "",
+      username: "",
+      password: "",
+    });
     const store = useUserStore();
 
-    const signUp = () => {
-      http
-        .post("/users/", {
-          email: email.value,
-          username: username.value,
-          password: password.value,
-        })
-        .then((response) => {
-          if (response.data.status == "error") {
-            window.alert(response.data.msg);
-          } else {
-            store.setUsername(response.data.username);
-            store.setUsertoken(response.data.jwt);
-            router.push("/");
-          }
-        });
+    const signUp = async () => {
+      try {
+        const { data, status } = await UserService.createUser(userData.value);
+        console.log(data, status);
+        router.push("/signin");
+      } catch (error) {
+        window.alert(error.message);
+      }
+      // http
+      //   .post("/users/", {
+      //     email: email.value,
+      //     username: username.value,
+      //     password: password.value,
+      //   })
+      //   .then((response) => {
+      //     if (response.data.status == "error") {
+      //       window.alert(response.data.msg);
+      //     } else {
+      //       store.setUsername(response.data.username);
+      //       store.setUsertoken(response.data.jwt);
+      //       router.push("/");
+      //     }
+      // });
     };
 
-    return { email, username, password, signUp, store };
+    return { email, username, password, signUp, store, userData };
   },
 };
 </script>
