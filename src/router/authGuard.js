@@ -1,4 +1,8 @@
 /* eslint-disable no-unused-vars */
+import { useUserStore } from "../stores/user";
+
+//const store = useUserStore();
+
 export default async (to, from) => {
   var token = localStorage.getItem("JWT_TOKEN");
   var user = localStorage.getItem("USERNAME");
@@ -11,6 +15,7 @@ export default async (to, from) => {
       console.log("Token não existe");
       return { name: "signin" };
     } else {
+      // store.setIsLogged();
       return;
     }
   }

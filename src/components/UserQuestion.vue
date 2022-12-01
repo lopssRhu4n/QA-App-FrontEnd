@@ -1,24 +1,28 @@
 <template>
   <q-card class="my-card text-white bg-primary">
-    <q-card-section>
-      <div class="text-h6">{{ post.title }}</div>
-      <div class="text-subtitle2">{{ post.author }}</div>
-      <q-btn
-        unelevated
-        color="secondary"
-        @click="deletePost"
-        :size="xs"
-        rounded
-        icon="delete"
-      />
-      <q-btn
-        unelevated
-        color="secondary"
-        @click="DeletePost"
-        :size="xs"
-        rounded
-        icon="edit"
-      />
+    <q-card-section class="flex justify-between">
+      <div class="column">
+        <div class="text-h6">{{ post.title }}</div>
+        <div class="text-subtitle2">{{ post.author }}</div>
+      </div>
+      <div class="row">
+        <q-btn
+          unelevated
+          color="secondary"
+          @click="deletePost"
+          :size="'xs'"
+          rounded
+          icon="delete"
+        />
+        <q-btn
+          unelevated
+          color="secondary"
+          @click="deletePost"
+          :size="'xs'"
+          rounded
+          icon="edit"
+        />
+      </div>
     </q-card-section>
 
     <q-card-section class="q-pt-none">
@@ -27,7 +31,7 @@
     <q-card-actions>
       <q-form class="full-width" @submit="submitAnswer">
         <q-input
-          v-model="answerText"
+          v-model="answerData"
           label="Answer"
           bg-color="white"
           filled
@@ -71,6 +75,8 @@ export default {
       }
     };
 
+    const editPost = async () => {};
+
     const submitAnswer = async () => {
       try {
         const { res } = await AnswerService.postAnswer(answerData);
@@ -80,7 +86,7 @@ export default {
       }
     };
 
-    return { props, answerData, deletePost, submitAnswer };
+    return { props, answerData, deletePost, submitAnswer, editPost };
   },
 };
 </script>
