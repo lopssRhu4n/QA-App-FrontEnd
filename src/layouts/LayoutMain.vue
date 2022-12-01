@@ -45,6 +45,15 @@
             :to="{ name: 'signin' }"
             class="q-mx-md"
           />
+
+          <q-btn
+            unelevated
+            text-color="white"
+            icon="logout"
+            @click="logOut"
+            :to="{ name: 'signin' }"
+            class="q-mx-md"
+          />
         </div>
         <q-btn dense flat round icon="menu" @click="toggleRightDrawer" />
       </q-toolbar>
@@ -138,6 +147,9 @@ export default {
   setup() {
     const rightDrawerOpen = ref(false);
     const text = ref("");
+    const logOut = () => {
+      localStorage.clear();
+    };
 
     return {
       rightDrawerOpen,
@@ -146,6 +158,7 @@ export default {
       },
       text,
       menuList,
+      logOut,
     };
   },
 };
