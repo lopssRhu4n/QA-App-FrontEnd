@@ -76,6 +76,7 @@ export default {
 
     const loading = ref(false);
     const store = useUserStore();
+    store.setIsLogged();
 
     const question = ref({
       author: "",

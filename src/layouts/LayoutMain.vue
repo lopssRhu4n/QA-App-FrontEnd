@@ -102,6 +102,8 @@
 
 <script>
 import { ref } from "vue";
+import { useUserStore } from "../stores/user";
+const store = useUserStore();
 
 const menuList = [
   {
@@ -149,6 +151,7 @@ export default {
     const text = ref("");
     const logOut = () => {
       localStorage.clear();
+      store.setIsLogged();
     };
 
     return {

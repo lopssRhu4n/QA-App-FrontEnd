@@ -8,6 +8,12 @@ export const useUserStore = defineStore("user", () => {
     username.value = value;
   }
 
+  const isLogged = ref(false);
+  const getIsLogged = computed(() => isLogged.value);
+  function setIsLogged() {
+    isLogged.value = !isLogged.value;
+  }
+
   const userID = ref("");
   const getUserID = computed(() => userID.value);
   function setUserID(value) {
@@ -30,5 +36,8 @@ export const useUserStore = defineStore("user", () => {
     usertoken,
     getUsertoken,
     setUsertoken,
+    isLogged,
+    setIsLogged,
+    getIsLogged,
   };
 });
